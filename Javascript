@@ -1,0 +1,86 @@
+'use strict';
+
+const images = [
+    { 'id': '1', 'url':'img/Pomni.png' },
+    { 'id': '2', 'url':'img/Pomni_LD.jpg' },
+    { 'id': '3', 'url':'img/Pomni_de_costas.png' },
+    { 'id': '4', 'url':'img/Pomni_LE.jpg' },
+];
+
+const containerItems = document.querySelector('#container-items');
+
+const loadImages = ( images, container ) => {
+    images.forEach ( image => {
+        container.innerHTML += `
+            <div class='item'>
+                <img src='${image.url}'
+            </div>
+        `;
+    });
+};
+
+loadImages( images, containerItems );
+
+let items = document.querySelectorAll('.item');
+
+const previous = () => {
+    containerItems.appendChild(items[0]);
+    items = document.querySelectorAll('.item');
+};
+
+const next = () => {
+    const lastItem = items[items.length - 1];
+    containerItems.insertBefore( lastItem, items[0] );
+    items = document.querySelectorAll('.item');
+};
+
+document.querySelector('#previous').addEventListener('click', previous);
+document.querySelector('#next').addEventListener('click', next);
+
+
+
+function ativarModoCinema() {
+    const video = document.getElementById("videoFull");
+    const textos = document.querySelectorAll(".textoextra");
+    const musica = document.getElementById("musicadefundo");
+
+    //ativa modo cinema
+    document.body.classList.add("modo-cinema");
+
+    // roda vídeo
+    video.currentTime = 0;
+    video.play();
+
+    //roda musica
+    musica.currentTime = 0;
+    musica.play();
+    musica.volume = 0.5; // volume da música
+    musica.loop = true; // loop da música
+    musica.currentTime = video.currentTime; // sincroniza música com vídeo6
+
+    let index = 0;
+
+    function mostrarTexto() {
+        // remove o atual
+        textos.forEach(t => t.classList.remove("mostrar"));
+
+        // mostra o atual
+        textos[index].classList.add("mostrar");
+
+        // próximo
+        index++;
+
+        if (index < textos.length) {
+            setTimeout(mostrarTexto, 4000); // tempo entre textos
+        } else {
+            //ultimo fica mais tempo
+            setTimeout(() => {
+                textos[index - 1].classList.remove("mostrar");
+            }, 4000); // 4 segundos
+        
+    }
+
+}
+    mostrarTexto();
+}
+
